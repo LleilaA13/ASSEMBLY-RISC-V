@@ -22,24 +22,34 @@
 	 n08:    .word -1, 0, 0
  
 .text
+
+	lw a0, albero
+	jal ra, conta
+	
+	
+			
+		li a7, 1
+		ecall
+		li a7, 10
+		ecall
 	conta: #base case: empty forest (or forest) 
 		bne a0, zero, ric
 		jalr zero, ra, 0 #we jump back to the caller
-
+		
 	ric:  addi sp, sp, -12 #reserve space in the stack
 		sw ra, 0(sp)     
 		sw a0, 4(sp)
 		
 		lw a0, 4(a0)    #load pointer to children forest
-		jalr ra, conta
+		jal ra, conta
 		sw a0, 8(sp)
 		lw a0, 4(sp)
 		lw a0, 8(a0)
 		
-		jalr ra, conta
+		jal ra, conta
 		lw t0, 8(sp)
 		add a0, a0, t0
-		addi a0, a0, 1
+		add a0, a0, sp
 		lw ra, 0(sp)
 		addi sp, sp, 12
 		jalr zero, ra, 0
